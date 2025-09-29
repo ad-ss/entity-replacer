@@ -53,20 +53,19 @@ export function App() {
     }
   };
 
-  const handleReplace = () => {
-    const entityKey = `[entity-${entityCounter}]`;
-    const newEntities = { ...entities, [entityKey]: selection.text };
+const handleReplace = () => {
+  const entityKey = `[entity-${entityCounter}]`;
+  const newEntities = { ...entities, [entityKey]: selection.text };
 
-    const newText =
-      text.substring(0, selection.start) +
-      entityKey +
-      text.substring(selection.end);
+  const regex = new RegExp(selection.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g'); 
+  const newText = text.replace(regex, entityKey);
 
-    setText(newText);
-    setEntities(newEntities);
-    setEntityCounter(entityCounter + 1);
-    setContextMenu({ visible: false, x: 0, y: 0 });
-  };
+  setText(newText);
+  setEntities(newEntities);
+  setEntityCounter(entityCounter + 1);
+  setContextMenu({ visible: false, x: 0, y: 0 });
+};
+
 
   const handleRestoreAll = () => {
     let restoredText = text;
